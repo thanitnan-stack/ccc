@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html class="light" lang="th">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>ระบบจัดการหลังบ้าน - CG มาเช่ Admin</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;900&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="assets/js/tailwind-config.js"></script>
+    <!-- Firebase importmap removed for local storage implementation -->
+    <style>
+        body {
+            font-family: 'Outfit', 'Noto Sans Thai', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-link.active {
+            background: linear-gradient(90deg, #16a34a 0%, rgba(22, 163, 74, 0.5) 100%);
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(22, 163, 74, 0.2);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 dark:bg-[#0a0a0a] text-gray-800 dark:text-gray-200 h-screen flex overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-72 bg-black text-white flex flex-col border-r border-white/10 relative z-20 hidden md:flex">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center px-8 border-b border-white/10">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-[#4ade80] flex items-center justify-center text-white shadow-lg shadow-primary/20 transition-transform group-hover:scale-110">
+                    <span class="material-symbols-rounded text-2xl">potted_plant</span>
+                </div>
+                <div>
+                    <h1 class="font-black text-xl tracking-tight leading-none">CG มาเช่</h1>
+                    <span class="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold">Admin</span>
+                </div>
+            </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+            <p class="px-4 text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Main Menu</p>
+
+            <button onclick="switchTab('dashboard')" id="nav-dashboard"
+                class="sidebar-link w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 hover:bg-white/10 text-gray-300 hover:text-white group">
+                <span
+                    class="material-symbols-rounded text-[22px] transition-transform group-hover:scale-110">dashboard</span>
+                <span class="font-medium">ภาพรวม (Dashboard)</span>
+            </button>
+
+            <button onclick="switchTab('products')" id="nav-products"
+                class="sidebar-link w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 hover:bg-white/10 text-gray-300 hover:text-white group">
+                <span
+                    class="material-symbols-rounded text-[22px] transition-transform group-hover:scale-110">inventory_2</span>
+                <span class="font-medium">จัดการสินค้า (Products)</span>
+            </button>
+
+            <button onclick="switchTab('members')" id="nav-members"
+                class="sidebar-link w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 hover:bg-white/10 text-gray-300 hover:text-white group">
+                <span
+                    class="material-symbols-rounded text-[22px] transition-transform group-hover:scale-110">group</span>
+                <span class="font-medium">จัดการสมาชิก (Members)</span>
+            </button>
+
+            <button onclick="switchTab('orders')" id="nav-orders"
+                class="sidebar-link w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 hover:bg-white/10 text-gray-300 hover:text-white group">
+                <span
+                    class="material-symbols-rounded text-[22px] transition-transform group-hover:scale-110">shopping_bag</span>
+                <span class="font-medium">จัดการออเดอร์ (Orders)</span>
+            </button>
+        </nav>
+
+        <!-- User Profile (Bottom Sidebar) -->
+        <div class="p-4 border-t border-white/10">
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5">
+                <div
+                    class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold border border-primary/30">
+                    A
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-bold text-white truncate">Admin User</p>
+                    <p class="text-xs text-gray-400 truncate">System Manager</p>
+                </div>
+                <button onclick="logout()" class="text-gray-400 hover:text-red-400 transition-colors">
+                    <span class="material-symbols-rounded">logout</span>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
+        <!-- Mobile Header -->
+        <header
+            class="h-16 bg-white dark:bg-[#1a1a1a] border-b border-gray-200 dark:border-gray-800 flex md:hidden items-center justify-between px-4 z-30">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-[#4ade80] flex items-center justify-center text-white">
+                    <span class="material-symbols-rounded text-lg">potted_plant</span>
+                </div>
+                <span class="font-bold text-lg dark:text-white">CG มาเช่ Admin</span>
+            </div>
+            <button class="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+                <span class="material-symbols-rounded">menu</span>
+            </button>
+        </header>
+
+        <!-- Content Area -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth">
+            <div class="max-w-7xl mx-auto">
+
+                <!-- Section: Dashboard -->
+                <div id="section-dashboard" class="space-y-6">
+                    <div class="flex items-end justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-black text-gray-900 dark:text-white">Overview</h2>
+                            <p class="text-gray-500 dark:text-gray-400">ภาพรวมของระบบร้านค้า</p>
+                        </div>
+                        <div class="text-sm text-gray-400" id="current-date">Today</div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Stat Card 1 -->
+                        <div
+                            class="relative overflow-hidden rounded-2xl bg-white dark:bg-[#1a1a1a] p-6 shadow-sm border border-gray-100 dark:border-gray-800 group">
+                            <div
+                                class="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 rounded-full bg-primary/10 blur-xl group-hover:bg-primary/20 transition-all">
+                            </div>
+                            <div class="flex justify-between items-start relative z-10">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">สินค้าทั้งหมด</p>
+                                    <h3 class="text-3xl font-black text-gray-900 dark:text-white mt-1"
+                                        id="dash-total-products">0</h3>
+                                </div>
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-900/20 flex items-center justify-center text-orange-500">
+                                    <span class="material-symbols-rounded">inventory_2</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Stat Card 2 -->
+                        <div
+                            class="relative overflow-hidden rounded-2xl bg-white dark:bg-[#1a1a1a] p-6 shadow-sm border border-gray-100 dark:border-gray-800 group">
+                            <div
+                                class="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 rounded-full bg-blue-500/10 blur-xl group-hover:bg-blue-500/20 transition-all">
+                            </div>
+                            <div class="flex justify-between items-start relative z-10">
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">สมาชิกทั้งหมด</p>
+                                    <h3 class="text-3xl font-black text-gray-900 dark:text-white mt-1"
+                                        id="dash-total-members">0</h3>
+                                </div>
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-blue-500">
+                                    <span class="material-symbols-rounded">group</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Stat Card 3 -->
+                <div
+                    class="relative overflow-hidden rounded-2xl bg-white dark:bg-[#1a1a1a] p-6 shadow-sm border border-gray-100 dark:border-gray-800 group">
+                    <div
+                        class="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 rounded-full bg-purple-500/10 blur-xl group-hover:bg-purple-500/20 transition-all">
+                    </div>
+                    <div class="flex justify-between items-start relative z-10">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">ออเดอร์ทั้งหมด</p>
+                            <h3 class="text-3xl font-black text-gray-900 dark:text-white mt-1" id="dash-total-orders">0
+                            </h3>
+                        </div>
+                        <div
+                            class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center text-purple-500">
+                            <span class="material-symbols-rounded">shopping_bag</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stat Card 4 (System) -->
+                <div
+                    class="relative overflow-hidden rounded-2xl bg-white dark:bg-[#1a1a1a] p-6 shadow-sm border border-gray-100 dark:border-gray-800 group">
+                    <div
+                        class="absolute top-0 right-0 -mr-4 -mt-4 w-24 h-24 rounded-full bg-green-500/10 blur-xl group-hover:bg-green-500/20 transition-all">
+                    </div>
+                    <div class="flex justify-between items-start relative z-10">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">สถานะระบบ</p>
+                            <h3 class="text-lg font-bold text-green-500 mt-2 flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
+                                Online
+                            </h3>
+                        </div>
+                        <div
+                            class="w-12 h-12 rounded-xl bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-green-500">
+                            <span class="material-symbols-rounded">dns</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <!-- Section: Products -->
+    <div id="section-products" class="hidden space-y-6 animate-fade-in">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                    <span class="material-symbols-rounded text-primary">inventory_2</span> จัดการสินค้า
+                </h2>
+                <p class="text-sm text-gray-500">เพิ่ม ลบ หรือแก้ไขข้อมูลสินค้า</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="restoreData()"
+                    class="px-6 py-2.5 rounded-xl border-2 border-primary/20 bg-white dark:bg-[#222] text-primary dark:text-primary font-bold hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors flex items-center gap-2 animate-pulse">
+                    <span class="material-symbols-rounded">restore</span> กู้คืนข้อมูล (Restore Data)
+                </button>
+                <div id="db-status-indicator"
+                    class="hidden flex items-center gap-2 px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold">
+                    <span class="w-2 h-2 rounded-full bg-red-500"></span> Disconnected
+                </div>
+                <button onclick="openProductModal()"
+                    class="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-sm font-bold shadow-lg shadow-primary/25 transition-all hover:-translate-y-0.5 flex items-center gap-2">
+                    <span class="material-symbols-rounded">add</span> เพิ่มสินค้า
+                </button>
+            </div>
+        </div>
+
+        <!-- Products Table Card -->
+        <div
+            class="bg-white dark:bg-[#1a1a1a] rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden flex flex-col max-h-[70vh]">
+            <div class="overflow-auto custom-scrollbar">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr
+                            class="sticky top-0 bg-gray-50/95 dark:bg-[#222]/95 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 z-10 transition-colors">
+                            <th class="p-5 text-xs font-bold text-gray-400 uppercase tracking-wider"></th>
+                            <th class="p-5 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                ชื่อสินค้า</th>
+                            <th class="p-5 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                หมวดหมู่</th>
+                            <th class="p-5 text-xs font-bold text-gray-400 uppercase tracking-wider">ราคา
+                            </th>
+                            <th class="p-5 text-right text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-table-body" class="divide-y divide-gray-100 dark:divide-gray-800">
+                        <!-- Rows -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="products-empty-state" class="hidden py-16 flex flex-col items-center justify-center text-center">
+                <div class="w-16 h-16 bg-gray-50 dark:bg-[#222] rounded-full flex items-center justify-center mb-4">
+                    <span class="material-symbols-rounded text-gray-300 text-3xl">inbox</span>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">ไม่พบข้อมูลสินค้า</h3>
+                <p class="text-gray-500 text-sm mt-1">เริ่มเพิ่มสินค้าชิ้นแรกของคุณได้เลย</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section: Orders -->
+    <div id="section-orders" class="hidden space-y-6 animate-fade-in">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                    <span class="material-symbols-rounded text-purple-500">shopping_bag</span> จัดการออเดอร์
+                </h2>
+                <p class="text-sm text-gray-500">รายการสั่งซื้อทั้งหมดจากลูกค้า</p>
+            </div>
+        </div>
+
+        <div
+            class="bg-white dark:bg-[#1a1a1a] rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50/50 dark:bg-[#222]/50 border-b border-gray-100 dark:border-gray-800">
+                            <th class="p-5 text-xs font-bold text-gray-400 uppercase tracking-wider">Order ID
+                            </th>
+                            <th class="p-5 text-xs font-bold text-gray-400 uppercase tracking-wider">Customer
+                            </th>
+                            <th class="p-5 text-xs font-bold text-gray-400 uppercase tracking-wider">Items
+                            </th>
+                            <th class="p-5 text-xs font-bold text-gray-400 uppercase tracking-wider">Total
+                            </th>
+                            <th class="p-5 text-xs font-bold text-gray-400 uppercase tracking-wider">Status
+                            </th>
+                            <th class="p-5 text-right text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-table-body" class="divide-y divide-gray-100 dark:divide-gray-800">
+                        <!-- Rows -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="orders-empty-state" class="hidden py-12 text-center text-gray-500">
+                No orders found.
+            </div>
+        </div>
+    </div>
+
+    <!-- Section: Members -->
+    <div id="section-members" class="hidden space-y-6 animate-fade-in">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                    <span class="material-symbols-rounded text-blue-500">group</span> จัดการสมาชิก
+                </h2>
+                <p class="text-sm text-gray-500">รายชื่อสมาชิกทั้งหมดในระบบ</p>
+            </div>
+        </div>
+
+        <div
+            class="bg-white dark:bg-[#1a1a1a] rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="bg-gray-50/50 dark:bg-[#222]/50 border-b border-gray-100 dark:border-gray-800">
+                            <th class="p-5 text-xs font-bold text-gray-400 uppercase tracking-wider">User
+                                Info</th>
+                            <th class="p-5 text-xs font-bold text-gray-400 uppercase tracking-wider">Contact
+                            </th>
+                            <th class="p-5 text-xs font-bold text-gray-400 uppercase tracking-wider">Role
+                            </th>
+                            <th class="p-5 text-right text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table-body" class="divide-y divide-gray-100 dark:divide-gray-800">
+                        <!-- Rows -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    </main>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="fixed inset-0 z-[100] hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeProductModal()">
+        </div>
+
+        <!-- Modal Card -->
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white dark:bg-[#1a1a1a] rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-800 p-0 overflow-hidden transform transition-all scale-100">
+
+            <div
+                class="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-gray-50/50 dark:bg-[#222]/50">
+                <h3 class="text-xl font-bold flex items-center gap-2 dark:text-white" id="modal-title">
+                    <span class="material-symbols-rounded text-primary">add_circle</span> เพิ่มสินค้าใหม่
+                </h3>
+                <button onclick="closeProductModal()"
+                    class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+                    <span class="material-symbols-rounded">close</span>
+                </button>
+            </div>
+
+            <div class="p-6">
+                <form id="product-form" class="space-y-5">
+                    <input type="hidden" id="p_id">
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1.5">ชื่อสินค้า</label>
+                        <input required id="p_name" type="text"
+                            class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#222] focus:ring-2 focus:ring-primary/20 focus:border-primary px-4 py-2.5 transition-all text-sm font-medium dark:text-white placeholder-gray-400"
+                            placeholder="เช่น ผักบุ้งจีน, คะน้าฮ่องกง">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1.5">หมวดหมู่</label>
+                            <select id="p_category"
+                                class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#222] focus:ring-2 focus:ring-primary/20 focus:border-primary px-4 py-2.5 text-sm font-medium dark:text-white">
+                                <option value="vegetable">ผักสวนครัว (Vegetables)</option>
+                                <option value="organic">ผักออร์แกนิก (Organic)</option>
+                                <option value="seeds">เมล็ดพันธุ์/อุปกรณ์ (Seeds)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-1.5">ราคา (บาท)</label>
+                            <input required id="p_price" type="number"
+                                class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#222] focus:ring-2 focus:ring-primary/20 focus:border-primary px-4 py-2.5 text-sm font-medium dark:text-white"
+                                placeholder="0">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1.5">ลิงก์รูปภาพ</label>
+                        <input required id="p_image" type="url"
+                            class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#222] focus:ring-2 focus:ring-primary/20 focus:border-primary px-4 py-2.5 text-sm font-medium dark:text-white"
+                            placeholder="https://example.com/image.jpg">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1.5">รายละเอียด</label>
+                        <textarea required id="p_desc" rows="3"
+                            class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#222] focus:ring-2 focus:ring-primary/20 focus:border-primary px-4 py-2.5 text-sm font-medium dark:text-white resize-none"
+                            placeholder="รายละเอียดสินค้า..."></textarea>
+                    </div>
+
+                    <div class="pt-2 flex gap-3">
+                        <button type="button" onclick="closeProductModal()"
+                            class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 dark:bg-[#333] dark:hover:bg-[#444] text-gray-700 dark:text-gray-200 font-bold rounded-xl transition-colors text-sm">
+                            ยกเลิก
+                        </button>
+                        <button type="submit"
+                            class="flex-1 py-3 bg-primary hover:bg-primary-hover text-white font-bold rounded-xl transition-all shadow-lg shadow-primary/30 text-sm">
+                            บันทึกข้อมูล
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="order-modal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeOrderModal()"></div>
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-white dark:bg-[#1a1a1a] rounded-2xl shadow-2xl border border-gray-100 dark:border-gray-800 p-0 overflow-hidden transform transition-all scale-100 max-h-[90vh] overflow-y-auto">
+            <div
+                class="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center bg-gray-50/50 dark:bg-[#222]/50">
+                <div>
+                    <h3 class="text-xl font-bold flex items-center gap-2 dark:text-white">
+                        <span class="material-symbols-rounded text-purple-500">receipt_long</span> รายละเอียดคำสั่งซื้อ
+                    </h3>
+                    <p class="text-xs text-gray-500 mt-1" id="ord-id-display">#ORD-XXXXXX</p>
+                </div>
+                <button onclick="closeOrderModal()"
+                    class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+                    <span class="material-symbols-rounded">close</span>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-6">
+                <!-- Customer Info -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div class="p-4 bg-gray-50 dark:bg-[#222] rounded-xl space-y-2">
+                        <p class="font-bold text-gray-500 text-xs uppercase">ข้อมูลลูกค้า</p>
+                        <p class="font-bold text-lg dark:text-white" id="ord-customer-name">-</p>
+                        <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                            <span class="material-symbols-rounded text-base">person</span>
+                            <span id="ord-user-account">-</span>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-gray-50 dark:bg-[#222] rounded-xl space-y-2">
+                        <p class="font-bold text-gray-500 text-xs uppercase">การจัดส่ง</p>
+                        <div class="flex items-start gap-2 text-gray-600 dark:text-gray-400">
+                            <span class="material-symbols-rounded text-base mt-0.5">location_on</span>
+                            <span id="ord-address" class="break-words">-</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                            <span class="material-symbols-rounded text-base">call</span>
+                            <span id="ord-phone">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Items -->
+                <div>
+                    <h4 class="font-bold text-gray-900 dark:text-white mb-4">รายการสินค้า</h4>
+                    <div class="border border-gray-100 dark:border-gray-800 rounded-xl overflow-hidden">
+                        <table class="w-full text-left text-sm">
+                            <tbody id="ord-items-list" class="divide-y divide-gray-100 dark:divide-gray-800">
+                                <!-- JS Injected -->
+                            </tbody>
+                            <tfoot class="bg-gray-50/50 dark:bg-[#222]/50">
+                                <tr>
+                                    <td class="p-4 font-bold text-right" colspan="2">ยอดรวมทั้งสิ้น</td>
+                                    <td class="p-4 font-black text-primary text-right text-lg" id="ord-total">฿0</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-100 dark:border-gray-800"
+                    id="ord-actions">
+                    <!-- JS Injected -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logic -->
+    <script type="module">
+        import { initUserListener, getCurrentUser, logout, deleteUser as deleteUserFromDb } from './assets/js/auth-utils.js';
+
+        import { initProductListener, saveProduct, deleteProduct as deleteProductUtils, restoreDefaultProducts } from './assets/js/products-utils.js';
+        import { initOrderListener, updateOrderStatus } from './assets/js/orders-utils.js';
+
+        // Globals
+        window.switchTab = switchTab;
+        window.logout = async () => {
+            if (confirm('ต้องการออกจากระบบ?')) {
+                await logout();
+                window.location.href = 'index.html';
+            }
+        };
+        window.restoreData = async function () {
+            if (confirm('ต้องการกู้คืนข้อมูลสินค้าตัวอย่างทั้งหมดหรือไม่?')) {
+                try {
+                    await restoreDefaultProducts();
+                    alert('✅ กู้คืนข้อมูลสำเร็จ!');
+                } catch (e) {
+                    alert('❌ เกิดข้อผิดพลาด: ' + e.message);
+                }
+            }
+        }
+        window.openProductModal = openProductModal;
+        window.closeProductModal = closeProductModal;
+        window.editProduct = editProduct;
+        window.deleteProduct = deleteProduct;
+        window.deleteUser = deleteUser;
+        window.updateOrderStatus = updateOrderStatusUI;
+        window.viewOrder = viewOrder;
+        window.closeOrderModal = closeOrderModal;
+        window.confirmOrder = confirmOrder;
+
+        // Current Tab State
+        let activeTab = 'dashboard';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('current-date').textContent = new Date().toLocaleDateString('th-TH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+            // Checks
+            checkAdminAccess();
+
+            // Listeners
+            initUserListener((users) => {
+                renderUsersTable(users);
+                updateStats('members', users.length);
+            });
+
+            initProductListener((products) => {
+                renderProductsTable(products);
+                updateStats('products', products.length);
+            });
+
+            initOrderListener((orders) => {
+                renderOrdersTable(orders);
+                updateStats('orders', orders.length);
+            });
+
+            // Set initial tab
+            switchTab('dashboard');
+
+            checkConnection();
+        });
+
+        async function checkConnection() {
+            const indicator = document.getElementById('db-status-indicator');
+            if (!indicator) return;
+
+            // Local Mock always connected
+            setTimeout(() => {
+                indicator.classList.remove('hidden', 'bg-red-100', 'text-red-700', 'bg-yellow-100', 'text-yellow-700');
+                indicator.classList.add('bg-green-100', 'text-green-700');
+                indicator.innerHTML = '<span class="w-2 h-2 rounded-full bg-green-500"></span> Local Storage';
+            }, 500);
+        }
+
+        function checkAdminAccess() {
+            const user = getCurrentUser();
+            if (!user || user.role !== 'admin') {
+                // Redirect if not admin (simple protection)
+                // In real app, Firestore rules protect data anyway
+                window.location.href = 'index.html';
+            }
+        }
+
+        function updateStats(type, count) {
+            if (type === 'members') document.getElementById('dash-total-members').textContent = count;
+            if (type === 'products') document.getElementById('dash-total-products').textContent = count;
+            if (type === 'orders') document.getElementById('dash-total-orders').textContent = count;
+        }
+
+        function switchTab(tab) {
+            activeTab = tab;
+
+            // Update Sidebar UI
+            document.querySelectorAll('.sidebar-link').forEach(el => el.classList.remove('active', 'text-black', 'bg-gradient-to-r'));
+            document.querySelectorAll('.sidebar-link').forEach(el => el.classList.add('text-gray-300'));
+
+            const activeBtn = document.getElementById(`nav-${tab}`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.classList.remove('text-gray-300');
+            }
+
+            // Hide/Show Sections
+            ['dashboard', 'products', 'members', 'orders'].forEach(s => {
+                const el = document.getElementById(`section-${s}`);
+                if (el) {
+                    if (s === tab) el.classList.remove('hidden');
+                    else el.classList.add('hidden');
+                }
+            });
+        }
+
+        // --- Renderers ---
+
+        function renderProductsTable(products) {
+            const tbody = document.getElementById('products-table-body');
+            const empty = document.getElementById('products-empty-state');
+            tbody.innerHTML = '';
+
+            if (products.length === 0) {
+                empty.classList.remove('hidden');
+                return;
+            }
+            empty.classList.add('hidden');
+
+            products.forEach(p => {
+                const categoryMap = {
+                    'vegetable': 'ผักสวนครัว',
+                    'organic': 'ผักออร์แกนิก',
+                    'seeds': 'เมล็ดพันธุ์/อุปกรณ์',
+                    'amulet': 'พระเครื่อง (เก่า)',
+                    'statue': 'พระบูชา (เก่า)',
+                    'accessories': 'อุปกรณ์ (เก่า)'
+                };
+                const displayCategory = categoryMap[p.category] || p.category;
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-gray-50 dark:hover:bg-[#1f1f1f] transition-colors border-b border-gray-100 dark:border-gray-800 last:border-0 group';
+                tr.innerHTML = `
+                    <td class="p-5 w-20">
+                        <div class="w-12 h-12 rounded-lg bg-gray-100 dark:bg-[#333] overflow-hidden border border-gray-200 dark:border-gray-700">
+                            <img src="${p.image}" class="w-full h-full object-cover">
+                        </div>
+                    </td>
+                    <td class="p-5 font-bold text-gray-900 dark:text-white">${p.name}</td>
+                    <td class="p-5">
+                       <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-gray-100 dark:bg-[#333] text-gray-800 dark:text-gray-300 uppercase">
+                         ${displayCategory}
+                       </span>
+                    </td>
+                    <td class="p-5 font-bold text-primary">฿${p.price.toLocaleString()}</td>
+                    <td class="p-5 text-right">
+                        <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button onclick='editProduct(${JSON.stringify(p)})' class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-blue-50 text-gray-400 hover:text-blue-500 transition-colors">
+                                <span class="material-symbols-rounded text-lg">edit</span>
+                            </button>
+                            <button onclick="deleteProduct('${p.id}')" class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors">
+                                <span class="material-symbols-rounded text-lg">delete</span>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderUsersTable(users) {
+            const tbody = document.getElementById('users-table-body');
+            tbody.innerHTML = '';
+
+            users.forEach(u => {
+                const isAdmin = u.role === 'admin';
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-gray-50 dark:hover:bg-[#1f1f1f] transition-colors border-b border-gray-100 dark:border-gray-800 last:border-0';
+                tr.innerHTML = `
+                    <td class="p-5">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full ${isAdmin ? 'bg-gradient-to-br from-primary to-[#4ade80]' : 'bg-gray-100 dark:bg-[#333]'} flex items-center justify-center font-bold ${isAdmin ? 'text-white' : 'text-gray-500'} shadow-sm">
+                                ${u.username.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <div class="font-bold text-gray-900 dark:text-white">${u.username}</div>
+                                <div class="text-xs text-gray-500">${u.surname || ''}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="p-5 text-sm text-gray-500">
+                        <div class="flex flex-col">
+                            <span>${u.email || '-'}</span>
+                            <span class="text-xs opacity-70">${u.phone || '-'}</span>
+                        </div>
+                    </td>
+                    <td class="p-5">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold ${isAdmin ? 'bg-yellow-100 text-yellow-700 border border-yellow-200' : 'bg-green-100 text-green-700 border border-green-200'}">
+                            ${isAdmin ? '<span class="material-symbols-rounded text-[14px]">security</span> Admin' : 'Member'}
+                        </span>
+                    </td>
+                    <td class="p-5 text-right">
+                        ${!isAdmin ? `
+                        <button onclick="deleteUser('${u.id}')" class="text-gray-400 hover:text-red-500 transition-colors p-2 hover:bg-red-50 rounded-lg">
+                            <span class="material-symbols-rounded">delete</span>
+                        </button>
+                        ` : ''}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // --- Mock Actions ---
+
+        async function deleteProduct(id) {
+            if (confirm('ยืนยันการลบสินค้านี้?')) {
+                await deleteProductUtils(id);
+            }
+        }
+
+        async function updateOrderStatusUI(orderId, status) {
+            if (confirm('ต้องการเปลี่ยนสถานะเป็น ' + status + ' ?')) {
+                try {
+                    await updateOrderStatus(orderId, status);
+                } catch (e) {
+                    alert('Error: ' + e.message);
+                }
+            }
+        }
+
+        function renderOrdersTable(orders) {
+            const tbody = document.getElementById('orders-table-body');
+            const empty = document.getElementById('orders-empty-state');
+            tbody.innerHTML = '';
+
+            if (orders.length === 0) {
+                empty.classList.remove('hidden');
+                return;
+            }
+            empty.classList.add('hidden');
+
+            // Sort by date desc
+            orders.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            orders.forEach(order => {
+                let statusColor = 'bg-yellow-100 text-yellow-800';
+                if (order.status === 'จัดส่งสำเร็จ') statusColor = 'bg-green-100 text-green-800';
+                if (order.status === 'ยกเลิกแล้ว') statusColor = 'bg-red-100 text-red-800';
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-gray-50 dark:hover:bg-[#1f1f1f] transition-colors border-b border-gray-100 dark:border-gray-800';
+                tr.innerHTML = `
+                    <td class="p-5 font-mono text-xs font-bold text-primary">#${order.id}</td>
+                    <td class="p-5">
+                        <div class="font-bold text-gray-900 dark:text-white">${order.user}</div>
+                        <div class="text-xs text-gray-500">${order.date}</div>
+                    </td>
+                    <td class="p-5 text-sm text-gray-600 dark:text-gray-400">
+                        ${order.items.length} รายการ
+                        <div class="text-xs text-gray-400 truncate max-w-[150px]">${order.items.map(i => i.name).join(', ')}</div>
+                    </td>
+                    <td class="p-5 font-bold text-primary">฿${order.total.toLocaleString()}</td>
+                    <td class="p-5">
+                        <span class="px-2 py-1 rounded text-xs font-bold ${statusColor}">${order.status}</span>
+                    </td>
+                    <td class="p-5 text-right">
+                        <div class="flex justify-end gap-2">
+                             <button onclick='viewOrder(${JSON.stringify(order).replace(/'/g, "&#39;")})' class="p-2 rounded bg-blue-50 text-blue-600 hover:bg-blue-100" title="View Details">
+                                <span class="material-symbols-rounded text-lg">visibility</span>
+                            </button>
+                            ${order.status === 'รอตรวจสอบ' ? `
+                            <button onclick="confirmOrder('${order.id}')" class="p-2 rounded bg-green-50 text-green-600 hover:bg-green-100" title="Confirm Order">
+                                <span class="material-symbols-rounded text-lg">check_circle</span>
+                            </button>
+                            <button onclick="updateOrderStatusUI('${order.id}', 'ยกเลิกแล้ว')" class="p-2 rounded bg-red-50 text-red-600 hover:bg-red-100" title="Cancel Order">
+                                <span class="material-symbols-rounded text-lg">cancel</span>
+                            </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // --- Order Modal Logic ---
+        function viewOrder(order) {
+            const modal = document.getElementById('order-modal');
+            modal.classList.remove('hidden');
+
+            document.getElementById('ord-id-display').innerText = '#' + order.id;
+            document.getElementById('ord-user-account').innerText = order.user || '-';
+            document.getElementById('ord-customer-name').innerText = order.customerName || order.user || 'Guest';
+            document.getElementById('ord-address').innerText = order.address || 'ไม่ระบุที่อยู่';
+            document.getElementById('ord-phone').innerText = order.phone || '-';
+            document.getElementById('ord-total').innerText = '฿' + order.total.toLocaleString();
+
+            // Items
+            const itemsContainer = document.getElementById('ord-items-list');
+            itemsContainer.innerHTML = order.items.map(item => `
+                <tr class="border-b border-gray-50 dark:border-[#333] last:border-0">
+                    <td class="p-4 w-16">
+                        <img src="${item.image}" class="w-12 h-12 bg-gray-100 rounded-lg object-contain">
+                    </td>
+                    <td class="p-4">
+                        <p class="font-bold text-gray-900 dark:text-white">${item.name}</p>
+                        <p class="text-xs text-gray-500">${item.quantity} x ฿${item.price.toLocaleString()}</p>
+                    </td>
+                    <td class="p-4 text-right font-medium">
+                        ฿${(item.price * item.quantity).toLocaleString()}
+                    </td>
+                </tr>
+            `).join('');
+
+            // Actions Buttons based on Status
+            const actionsContainer = document.getElementById('ord-actions');
+            if (order.status === 'รอตรวจสอบ') {
+                actionsContainer.innerHTML = `
+                    <button onclick="updateOrderStatusUI('${order.id}', 'ยกเลิกแล้ว'); closeOrderModal();" class="flex-1 py-3 bg-red-50 hover:bg-red-100 text-red-700 font-bold rounded-xl transition-colors">
+                        ยกเลิกคำสั่งซื้อ (Cancel)
+                    </button>
+                    <button onclick="confirmOrder('${order.id}'); closeOrderModal();" class="flex-1 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-colors shadow-lg shadow-green-200">
+                        ยืนยันการจัดส่ง (Confirm)
+                    </button>
+                `;
+            } else {
+                actionsContainer.innerHTML = `
+                    <button onclick="closeOrderModal()" class="w-full py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition-colors">
+                        ปิดหน้าต่าง
+                    </button>
+                `;
+            }
+        }
+
+        function closeOrderModal() {
+            document.getElementById('order-modal').classList.add('hidden');
+        }
+
+        async function confirmOrder(orderId) {
+            if (confirm('ยืนยันออเดอร์นี้และเปลี่ยนสถานะเป็น "จัดส่งสำเร็จ"?')) {
+                try {
+                    await updateOrderStatus(orderId, 'จัดส่งสำเร็จ');
+                } catch (e) {
+                    alert('Error: ' + e.message);
+                }
+            }
+        }
+
+        async function deleteUser(id) {
+            if (confirm('⚠️ ยืนยันการลบสมาชิกนี้? การกระทำนี้ไม่สามารถย้อนกลับได้')) {
+                try {
+                    await deleteUserFromDb(id);
+                    // No need to reload, onSnapshot handles it
+                } catch (e) {
+                    alert('เกิดข้อผิดพลาด: ' + e.message);
+                }
+            }
+        }
+
+        // --- Modal ---
+        function openProductModal(product = null) {
+            const modal = document.getElementById('product-modal');
+            const title = document.getElementById('modal-title');
+
+            modal.classList.remove('hidden');
+
+            if (product) {
+                title.innerHTML = '<span class="material-symbols-rounded text-primary">edit</span> แก้ไขข้อมูลสินค้า';
+                document.getElementById('p_id').value = product.id;
+                document.getElementById('p_name').value = product.name;
+                document.getElementById('p_category').value = product.category;
+                // document.getElementById('p_price').value = parseInt(product.price); // Fix: Remove parseInt if price is string, or handle carefully
+                document.getElementById('p_price').value = product.price;
+                document.getElementById('p_image').value = product.image;
+                document.getElementById('p_desc').value = product.desc;
+            } else {
+                title.innerHTML = '<span class="material-symbols-rounded text-primary">add_circle</span> เพิ่มสินค้าใหม่';
+                document.getElementById('product-form').reset();
+                document.getElementById('p_id').value = '';
+            }
+        }
+
+        function editProduct(product) {
+            openProductModal(product);
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+        }
+
+        document.getElementById('product-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-rounded animate-spin">refresh</span> Saving...';
+            btn.disabled = true;
+
+            const product = {
+                name: document.getElementById('p_name').value,
+                category: document.getElementById('p_category').value,
+                price: parseInt(document.getElementById('p_price').value),
+                image: document.getElementById('p_image').value,
+                desc: document.getElementById('p_desc').value
+            };
+            const id = document.getElementById('p_id').value;
+            if (id) product.id = id;
+
+            try {
+                await saveProduct(product);
+                closeProductModal();
+            } catch (e) {
+                alert('Error: ' + e.message);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+
+    </script>
+</body>
+
+</html>
