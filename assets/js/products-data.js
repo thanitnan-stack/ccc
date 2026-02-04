@@ -13,7 +13,7 @@ export const DEFAULT_PRODUCTS = [
     name: "ผักบุ้งจีนสด (Fresh Morning Glory)",
     category: "vegetable",
     price: 20,
-    image: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQwpnqkDB5WJQJWMpul_hoin0Iq9N1JNaIFRVw8lU3GnPfbJn1lsDUHNCrOsO69",
+    image: "https://happygrocers.co/cdn/shop/files/morningglory1.jpg?v=1689581204",
     desc: "ผักบุ้งจีนสดใหม่จากแปลง เก็บเกี่ยววันต่อวัน กรอบนาน ทำเมนูไหนก็อร่อย"
   },
   {
@@ -37,7 +37,7 @@ export const DEFAULT_PRODUCTS = [
     name: "พริกจินดาแดง (Red Chili)",
     category: "vegetable",
     price: 15,
-    image: "https://images.unsplash.com/photo-1567529664896-193673d31299?auto=format&fit=crop&w=500&q=60",
+    image: "https://www.itfoods.co.th/wp-content/uploads/2023/02/Red-Chili-2.jpg",
     desc: "พริกจินดาแดงสด รสเผ็ดจัดจ้าน เพิ่มสีสันและรสชาติให้อาหารทุกจาน"
   },
 
@@ -47,7 +47,7 @@ export const DEFAULT_PRODUCTS = [
     name: "ชุดผักสลัดรวม (Mixed Organic Salad)",
     category: "organic",
     price: 89,
-    image: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQDQlFHTZcVcTMFogb9XU3BCssUoy2qPFWRl_YyrSTxJQOOwxA4g4-LHMpzeARs",
+    image: "https://www.chonklang.com/uploads/article/1549071078_Salad.jpg",
     desc: "รวมผักสลัด 5 ชนิด กรีนโอ๊ค เรดโอ๊ค คอส สด สะอาด พร้อมทาน"
   },
   {
@@ -79,7 +79,7 @@ export const DEFAULT_PRODUCTS = [
     name: "ฟักทองญี่ปุ่น (Organic Kabocha)",
     category: "organic",
     price: 120,
-    image: "https://images.unsplash.com/photo-1570586437263-162f27db78a7?auto=format&fit=crop&w=500&q=60",
+    image: "https://image.makewebcdn.com/makeweb/m_1920x0/2nvp7NtPx/DefaultData/2000000223223.jpg",
     desc: "ฟักทองเนื้อแน่น รสหวานมัน ปลูกด้วยวิธีธรรมชาติ ทำขนมหวานอร่อยมาก"
   },
 
@@ -89,7 +89,7 @@ export const DEFAULT_PRODUCTS = [
     name: "เมล็ดผักชี (Coriander Seeds)",
     category: "seeds",
     price: 25,
-    image: "https://images.unsplash.com/photo-1596386461350-326e9130e922?auto=format&fit=crop&w=500&q=60", // Placeholder
+    image: "https://www.allkaset.com/IMAGE/resale/1402_2.jpg", // Placeholder
     desc: "เมล็ดพันธุ์ผักชีคัดพิเศษ อัตราการงอกสูง ปลูกง่าย โตไว"
   },
   {
@@ -97,7 +97,7 @@ export const DEFAULT_PRODUCTS = [
     name: "เมล็ดกะเพราแดง (Red Basil Seeds)",
     category: "seeds",
     price: 20,
-    image: "https://images.unsplash.com/photo-1618331835717-801e976710b2?auto=format&fit=crop&w=500&q=60", // Placeholder
+    image: "https://inwfile.com/s-n/9awojx.jpg", // Placeholder
     desc: "เมล็ดกะเพราแดง กลิ่นหอมฉุน แรงกว่ากะเพราขาว เหมาะสำหรับคนชอบรสจัด"
   },
   {
@@ -113,7 +113,7 @@ export const DEFAULT_PRODUCTS = [
     name: "เมล็ดแตงโมตอร์ปิโด (Watermelon Seeds)",
     category: "seeds",
     price: 45,
-    image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=500&q=60",
+    image: "https://img.lazcdn.com/g/p/12223ccd407a2aaea0b5c034f1b75524.jpg_960x960q80.jpg_.webp",
     desc: "เมล็ดพันธุ์แตงโมลูกรี เนื้อแดงหวานฉ่ำ ทนโรค ปลูกได้ทุกฤดูกาล"
   },
   {
@@ -125,4 +125,5 @@ export const DEFAULT_PRODUCTS = [
     desc: "สุดคุ้ม! รวมเมล็ดกรีนโอ๊ค เรดโอ๊ค และคอส ในซองเดียว สำหรับมือใหม่หัดปลูก"
   }
 ];
+
 
