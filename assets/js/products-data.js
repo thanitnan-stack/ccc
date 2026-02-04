@@ -1,69 +1,128 @@
 export const DEFAULT_PRODUCTS = [
-    {
-        id: "1",
-        name: "คะน้าฮ่องกงออร์แกนิก (Organic Kale)",
-        category: "vegetable",
-        price: 45,
-        image: "https://www.eatfresh.com.hk/cdn/shop/products/2_32a6d51e-1a39-4985-988b-dfae7490629d_1024x1024.png?v=1551858962",
-        desc: "คะน้าฮ่องกงยอดอวบ กรอบ อร่อย ปลอดสารพิษ 100% เหมาะสำหรับผัดน้ำมันหอย"
-    },
-    {
-        id: "2",
-        name: "ผักบุ้งจีนสด (Fresh Morning Glory)",
-        category: "vegetable",
-        price: 20,
-        image: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQwpnqkDB5WJQJWMpul_hoin0Iq9N1JNaIFRVW8lU3GnPFbJn1lsDUHNcrOsO69",
-        desc: "ผักบุ้งจีนสดใหม่จากแปลง เก็บเกี่ยววันต่อวัน กรอบนาน ทำเมนูไหนก็อร่อย"
-    },
-    {
-        id: "3",
-        name: "ชุดผักสลัดรวม (Mixed Organic Salad)",
-        category: "organic",
-        price: 89,
-        image: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQDOlFHTZcVcTMFogb9XU3BCssUoy2qPFWRl_YyrSTxJQ00WxA4g4-LHMpzeARs", // Placeholder for salad
-        desc: "รวมผักสลัด 5 ชนิด กรีนโอ๊ค เรดโอ๊ค คอส ฟิลเลย์ บัตเตอร์เฮด สด สะอาด พร้อมทาน"
-    },
-    {
-        id: "4",
-        name: "มะนาวแป้นไร้เมล็ด (Seedless Lime)",
-        category: "vegetable",
-        price: 5,
-        image: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcR7FfrzSAieaYp9JUOblrzZjD56VcB1QpUFNnQJrS1GkRjA8HiETQ6h7BplRtNF", // Placeholder lime
-        desc: "มะนาวแป้นผิวบาง น้ำเยอะ กลิ่นหอม ไร้เมล็ด คัดพิเศษลูกต่อลูก"
-    },
-    {
-        id: "5",
-        name: "พริกขี้หนูสวน (Garden Chili)",
-        category: "vegetable",
-        price: 30,
-        image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTwlv0eWLiEfA9O71wf8X0JiPOqm5gB0bnP9Agq00p5bY3w2SbN0oXTsS3Lk7rS", // Placeholder chili
-        desc: "พริกขี้หนูสวนแท้ เม็ดเล็ก เผ็ดจี๊ดจ๊าด กลิ่นหอม เป็นเอกลักษณ์"
-    },
-    {
-        id: "6",
-        name: "เมล็ดพันธุ์ผักชี (Coriander Seeds)",
-        category: "seeds",
-        price: 25,
-        image: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcQMc0vhVzMBAjh3muKc0BP0vP0_WW9S0Z1zw6oChfx7azOuod5HAEL8XRyQQRdj",
-        desc: "เมล็ดพันธุ์ผักชีคัดพิเศษ อัตราการงอกสูง ปลูกง่าย โตไว ใบหอม"
-    },
-    {
-        id: "7",
-        name: "ดินปลูกสมุนไพร/ผัก (Organic Soil)",
-        category: "seeds",
-        price: 50,
-        image: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcT2Ty9FPMMwjGrTjQGF_VQkkJ4kOwWM_UXNOhXbDTWJBNf00k-UhoikHP_3qrHY",
-        desc: "ดินผสมใบก้ามปูและปุ๋ยคอก หมักสมบูรณ์ ธาตุอาหารครบ ร่วนซุย ระบายน้ำดี"
-    },
-     {
-        id: "8",
-        name: "กะเพรา/ผัก (sweet basil)",
-        category: "vegetable",
-        price: 10,
-        image: "https://image.makewebeasy.net/makeweb/m_1920x0/anRBvCQmu/DefaultData/S__24141826.jpg",
-        desc: "กะเพราเป็นผักอีกชนิดหนึ่งที่มีน้ำมันหอมระเหยที่ช่วยชูรสชาติอาหารให้น่ารับประทานมากขึ้นได้ ทั้งยังมีฤทธิ์แก้ท้องอืด ท้องเฟ้อ ขับลมได้"
-    }
-];
+  // --- หมวด Vegetable (ผักสวนครัว) 5 รายการ ---
+  {
+    id: "1",
+    name: "คะน้าฮ่องกง (Hong Kong Kale)",
+    category: "vegetable",
+    price: 45,
+    image: "https://www.eatfresh.com.hk/cdn/shop/products/2_32a6d51e-1a39-4985-988b-dfae7490629d_1024x1024.png?v=1551858962",
+    desc: "คะน้าฮ่องกงยอดอวบ กรอบ อร่อย ปลอดสารพิษ เหมาะสำหรับผัดน้ำมันหอย"
+  },
+  {
+    id: "2",
+    name: "ผักบุ้งจีนสด (Fresh Morning Glory)",
+    category: "vegetable",
+    price: 20,
+    image: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQwpnqkDB5WJQJWMpul_hoin0Iq9N1JNaIFRVw8lU3GnPfbJn1lsDUHNCrOsO69",
+    desc: "ผักบุ้งจีนสดใหม่จากแปลง เก็บเกี่ยววันต่อวัน กรอบนาน ทำเมนูไหนก็อร่อย"
+  },
+  {
+    id: "3",
+    name: "มะนาวแป้นไร้เมล็ด (Seedless Lime)",
+    category: "vegetable",
+    price: 5,
+    image: "https://images.unsplash.com/photo-1582281298055-e25b84a30b0b?auto=format&fit=crop&w=500&q=60",
+    desc: "มะนาวแป้นผิวบาง น้ำเยอะ กลิ่นหอม ไร้เมล็ด คัดพิเศษลูกต่อลูก"
+  },
+  {
+    id: "4",
+    name: "แตงกวาญี่ปุ่น (Japanese Cucumber)",
+    category: "vegetable",
+    price: 35,
+    image: "https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?auto=format&fit=crop&w=500&q=60",
+    desc: "แตงกวาญี่ปุ่นลูกเรียวยาว กรอบหวาน เนื้อแน่น ทานสดหรือทำสลัดก็ดี"
+  },
+  {
+    id: "5",
+    name: "พริกจินดาแดง (Red Chili)",
+    category: "vegetable",
+    price: 15,
+    image: "https://images.unsplash.com/photo-1567529664896-193673d31299?auto=format&fit=crop&w=500&q=60",
+    desc: "พริกจินดาแดงสด รสเผ็ดจัดจ้าน เพิ่มสีสันและรสชาติให้อาหารทุกจาน"
+  },
 
-window.products = DEFAULT_PRODUCTS;
+  // --- หมวด Organic (ผักออร์แกนิก) 5 รายการ ---
+  {
+    id: "6",
+    name: "ชุดผักสลัดรวม (Mixed Organic Salad)",
+    category: "organic",
+    price: 89,
+    image: "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQDQlFHTZcVcTMFogb9XU3BCssUoy2qPFWRl_YyrSTxJQOOwxA4g4-LHMpzeARs",
+    desc: "รวมผักสลัด 5 ชนิด กรีนโอ๊ค เรดโอ๊ค คอส สด สะอาด พร้อมทาน"
+  },
+  {
+    id: "7",
+    name: "เบบี้แครอทออร์แกนิก (Organic Baby Carrot)",
+    category: "organic",
+    price: 65,
+    image: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&w=500&q=60",
+    desc: "แครอทหัวเล็ก หวานกรอบ อุดมด้วยเบต้าแคโรทีน ปลูกแบบอินทรีย์ 100%"
+  },
+  {
+    id: "8",
+    name: "มะเขือเทศเชอร์รี่ (Organic Cherry Tomato)",
+    category: "organic",
+    price: 55,
+    image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&w=500&q=60",
+    desc: "มะเขือเทศลูกเล็ก รสเปรี้ยวอมหวาน ฉ่ำน้ำ วิตามินซีสูง ปลอดสารเคมี"
+  },
+  {
+    id: "9",
+    name: "ผักโขมออร์แกนิก (Organic Spinach)",
+    category: "organic",
+    price: 40,
+    image: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?auto=format&fit=crop&w=500&q=60",
+    desc: "ผักโขมใบเขียวสด อุดมด้วยธาตุเหล็ก เหมาะสำหรับทำซุปหรืออบชีส"
+  },
+  {
+    id: "10",
+    name: "ฟักทองญี่ปุ่น (Organic Kabocha)",
+    category: "organic",
+    price: 120,
+    image: "https://images.unsplash.com/photo-1570586437263-162f27db78a7?auto=format&fit=crop&w=500&q=60",
+    desc: "ฟักทองเนื้อแน่น รสหวานมัน ปลูกด้วยวิธีธรรมชาติ ทำขนมหวานอร่อยมาก"
+  },
+
+  // --- หมวด Seeds (เมล็ดพันธุ์) 5 รายการ ---
+  {
+    id: "11",
+    name: "เมล็ดผักชี (Coriander Seeds)",
+    category: "seeds",
+    price: 25,
+    image: "https://images.unsplash.com/photo-1596386461350-326e9130e922?auto=format&fit=crop&w=500&q=60", // Placeholder
+    desc: "เมล็ดพันธุ์ผักชีคัดพิเศษ อัตราการงอกสูง ปลูกง่าย โตไว"
+  },
+  {
+    id: "12",
+    name: "เมล็ดกะเพราแดง (Red Basil Seeds)",
+    category: "seeds",
+    price: 20,
+    image: "https://images.unsplash.com/photo-1618331835717-801e976710b2?auto=format&fit=crop&w=500&q=60", // Placeholder
+    desc: "เมล็ดกะเพราแดง กลิ่นหอมฉุน แรงกว่ากะเพราขาว เหมาะสำหรับคนชอบรสจัด"
+  },
+  {
+    id: "13",
+    name: "เมล็ดทานตะวันงอก (Sunflower Seeds)",
+    category: "seeds",
+    price: 35,
+    image: "https://images.unsplash.com/photo-1473156846075-fabbac1838ee?auto=format&fit=crop&w=500&q=60",
+    desc: "เมล็ดสำหรับเพาะต้นอ่อนทานตะวัน งอกง่ายภายใน 7 วัน โปรตีนสูง"
+  },
+  {
+    id: "14",
+    name: "เมล็ดแตงโมตอร์ปิโด (Watermelon Seeds)",
+    category: "seeds",
+    price: 45,
+    image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=500&q=60",
+    desc: "เมล็ดพันธุ์แตงโมลูกรี เนื้อแดงหวานฉ่ำ ทนโรค ปลูกได้ทุกฤดูกาล"
+  },
+  {
+    id: "15",
+    name: "ชุดเมล็ดผักสลัด 3 ชนิด (Salad Mix Seeds)",
+    category: "seeds",
+    price: 50,
+    image: "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=500&q=60", // Placeholder
+    desc: "สุดคุ้ม! รวมเมล็ดกรีนโอ๊ค เรดโอ๊ค และคอส ในซองเดียว สำหรับมือใหม่หัดปลูก"
+  }
+];
 
