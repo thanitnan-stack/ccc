@@ -54,7 +54,16 @@ export const DEFAULT_PRODUCTS = [
         price: 50,
         image: "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcT2Ty9FPMMwjGrTjQGF_VQkkJ4kOwWM_UXNOhXbDTWJBNf00k-UhoikHP_3qrHY",
         desc: "ดินผสมใบก้ามปูและปุ๋ยคอก หมักสมบูรณ์ ธาตุอาหารครบ ร่วนซุย ระบายน้ำดี"
+    },
+     {
+        id: "8",
+        name: "กะเพรา/ผัก (sweet basil)",
+        category: "vegetable",
+        price: 10,
+        image: "https://image.makewebeasy.net/makeweb/m_1920x0/anRBvCQmu/DefaultData/S__24141826.jpg",
+        desc: "กะเพราเป็นผักอีกชนิดหนึ่งที่มีน้ำมันหอมระเหยที่ช่วยชูรสชาติอาหารให้น่ารับประทานมากขึ้นได้ ทั้งยังมีฤทธิ์แก้ท้องอืด ท้องเฟ้อ ขับลมได้"
     }
 ];
 
 window.products = DEFAULT_PRODUCTS;
+
