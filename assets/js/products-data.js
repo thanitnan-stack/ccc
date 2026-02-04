@@ -105,7 +105,7 @@ export const DEFAULT_PRODUCTS = [
     name: "เมล็ดทานตะวันงอก (Sunflower Seeds)",
     category: "seeds",
     price: 35,
-    image: "https://down-th.img.susercontent.com/file/th-11134207-7rasd-m4hmkqqi0k962a",
+    image: "https://static.thairath.co.th/media/dFQROr7oWzulq5Fa5K78dRVbxkPbDdS1Ya3dQ6N78nqXj9MuAwmBCtF9Nmgzmt4iSTG.jpg",
     desc: "เมล็ดสำหรับเพาะต้นอ่อนทานตะวัน งอกง่ายภายใน 7 วัน โปรตีนสูง"
   },
   {
@@ -125,6 +125,7 @@ export const DEFAULT_PRODUCTS = [
     desc: "สุดคุ้ม! รวมเมล็ดกรีนโอ๊ค เรดโอ๊ค และคอส ในซองเดียว สำหรับมือใหม่หัดปลูก"
   }
 ];
+
 
 
 
